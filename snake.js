@@ -1,4 +1,9 @@
-window.addEventListener('load',function(event)
+const cvs = document.getElementById("snake");
+const ctx = cvs.getContext("2d");
+
+
+function draw()
 {
-    console.log('All resources have finished loading') ;
-})
+    ctx.fillRect(12,12,2,3);
+    
+}
