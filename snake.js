@@ -1,4 +1,9 @@
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.fillStyle = "#FF0000";
-ctx.fillRect(20, 20, 150, 100);
+const cvs = document.getElementById("snake");
+const ctx = cvs.getContext("2d");
+
+const ground = new Image();
+ground.src = "img/Background.jpg";
+
+ctx.fillStyle = "red";
+ctx.fillRect(12,12,20,30);
+ctx.drawImage(ground,12,12);
