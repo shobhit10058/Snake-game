@@ -60,6 +60,7 @@ body {
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
+    display: none;
 }
 
 .level_heading{
@@ -295,7 +296,7 @@ body {
 
 .list_options{
     list-style: none;
-    padding: 7rem ;
+    padding: 10% 0;
 }
 
 .options{

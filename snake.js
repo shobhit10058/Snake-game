@@ -25,6 +25,7 @@ snake[0] = {
 let d = "right" ;
 let count = 0;
 let speed = (box * 1000)/time_interval_calling_function;
+var calling_btn;
 const food = new Image();
 food.src = "img/food.jpg" ; 
 
@@ -43,6 +44,7 @@ let fin_score = document.getElementById("game_over_score");
 let main_page = document.getElementsByClassName("home_page");
 let main_page_list = document.getElementsByClassName("list_options");
 let main_page_game_btn = document.getElementsByClassName("options--1");
+let main_page_demo_btn = document.getElementsByClassName("options--2")[0];
 let back_btn = document.getElementsByClassName("btn_back")[0];
 let reset_btn = document.getElementsByClassName("btn_reset")[0];
 let count_box = document.getElementById("count");
@@ -98,20 +100,25 @@ click_sound.src = "audio/click.wav";
 
 back_btn.addEventListener("click",reload);
 main_page_game_btn[0].addEventListener("click",init);
-reset_btn.addEventListener("click",reset);
+main_page_demo_btn.addEventListener("click",init);
+reset_btn.addEventListener("click",init);
 clicked();
     
-function init() {
+function init(event) {
+    console.log(event.currentTarget);
+    if(event.currentTarget != reset_btn)
+        calling_btn = event.currentTarget;
     Object.assign(main_page[0].style,style_turning_page);
     Object.assign(reset_btn.style,style_reset_btn_st);
     Object.assign(game_over_card.style,style_game_over_st);
-    div_choose_level.style.display = "block";
     draw_canvas();
     food_pos = {
         x : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box,
         y : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box
     }
+    div_choose_level.style.display = "block";
     submit_level.addEventListener("click",start);
+    window.removeEventListener("keydown",control);
 }
 
 function start() {
@@ -161,8 +168,8 @@ function auxilary() {
     let ori_len = snake.length;
     for(i = 1 ;i < ori_len; i ++)
         snake.pop();
-    snake[0].x = box + off;
-    snake[0].y = box ;
+    snake[0].x = 0;
+    snake[0].y = 0 ;
     cvs.style.filter = "none";
     score = 0;
     score_card.innerHTML = score;
@@ -235,7 +242,6 @@ function draw(){
 
     //grid
     draw_canvas();
-    window.addEventListener("keydown",control) ;
     ctx.drawImage(food,food_pos.x,food_pos.y,box,box);
 
     //snake
@@ -246,6 +252,45 @@ function draw(){
         ctx.strokeStyle = "white";
         ctx.strokeRect(snake[i].x,snake[i].y,box,box);
     }
+    if(calling_btn != main_page_demo_btn)
+    {
+        window.addEventListener("keydown",control) ;
+    }
+    else
+    {
+        req_dir();
+    }
+    let new_head = make_new_head();
+
+    if(check_game_over(new_head) == true)
+    {
+        f_game_over();
+        clearInterval(game);
+    }
+    //directions
+    snake.unshift(new_head);
+    crawling.play();
+
+    if((snake[0].x == food_pos.x) && (snake[0].y == food_pos.y))
+    {
+        score ++;
+        score_card.innerHTML = score;
+        food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
+        food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
+        while((food_pos.x == new_head.x) && (food_pos.y == new_head.y))
+        {
+            food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
+            food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;       
+        }
+        food_audio.play();
+    }
+    else
+    {
+        snake.pop();
+    }
+}
+
+function make_new_head() {
     let new_x = snake[0].x;
     let new_y = snake[0].y;
     if(d == "left") {new_x -= box;} ;
@@ -257,50 +302,99 @@ function draw(){
         x : new_x ,
         y : new_y 
     }
-    //directions
-    snake.unshift(new_head);
-    crawling.play();
+    return new_head;
+}
 
-    if((snake[0].x == food_pos.x) && (snake[0].y == food_pos.y))
-    {
-        score ++;
-        score_card.innerHTML = score;
-        food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box + off;
-        food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
-        food_audio.play();
-    }
-    else
-    {
-        snake.pop();
-    }
+function check_game_over(head) {
     //game over or pause
-    for(i = 1; i < snake.length ;i ++ )
+    for(i = 1; i < snake.length - 1;i ++ )
     {
-        if((snake[0].x == snake[i].x) && (snake[0].y == snake[i].y))
+        if((head.x == snake[i].x) && (head.y == snake[i].y))
         {
-            food_audio.play();
-            setTimeout(f_game_over(),1000);
-            clearInterval(game);
+            return true;
         }    
     }
 
-    let b = false ;
-
-    if((snake[0].x < off) || (snake[0].x >= (width_grid * box + off)))
+    if((head.x < off) || (head.x >= (width_grid * box)))
     {
-        setTimeout(f_game_over(),1000);
-        clearInterval(game);
-        b = true;
+        return true;
     }    
     
-    if((snake[0].y < 0) || (snake[0].y >= width_grid * box))
+    if((head.y < 0) || (head.y >= width_grid * box))
     {
-        setTimeout(f_game_over(),1000);
-        clearInterval(game);
+        return true;
     }    
+    return false;
+}
+
+function req_dir() {
+    let changed = false;
+    if(snake[0].x != food_pos.x)
+    {
+        if(snake[0].x < food_pos.x)
+        {
+            if(d != "left")
+            {
+                changed = true;
+                d = "right";
+            }    
+        }    
+        else
+        {
+            if(d != "right")
+            {
+                changed = true;
+                d = "left";
+            }   
+        }   
+    }
+    //console.log(snake[0],food_pos,d,changed);
+    if(changed == false)
+    {
+        if(snake[0].y != food_pos.y)
+        {
+            if(snake[0].y < food_pos.y)
+            {
+                if(d != "up")
+                {
+                    changed = true;
+                     d = "down";
+                }   
+            }   
+            else
+            {
+                if(d != "down")
+                {
+                    changed = true;
+                    d = "up";
+                }     
+            }
+        }
+    }
+    prob_head = make_new_head();
+    changed = !check_game_over(prob_head) ;
+    if(changed == false)
+    {
+        if((d == "right") || (d == "left"))
+        {
+            d = "down" ;
+            prob_head = make_new_head();
+            if(check_game_over(prob_head))
+                d = "up";
+        }
+        else
+        {
+            d = "right";
+            prob_head = make_new_head();
+            if(check_game_over(prob_head))
+                d = "left";
+        }
+    }
+    //console.log("req_dir() called",d);
 }
 
 function f_game_over() {
+    console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
     game_over.play();
     fin_score.innerHTML = score;
@@ -314,8 +408,4 @@ function f_game_over() {
 
 function reload() {
     location.reload();
-}
-
-function reset() {
-    init();
 }
