@@ -329,68 +329,79 @@ function check_game_over(head) {
 
 function req_dir() {
     let changed = false;
+    let old_d = d;
     if(snake[0].x != food_pos.x)
     {
         if(snake[0].x < food_pos.x)
         {
-            if(d != "left")
+            if(old_d != "left")
             {
-                changed = true;
                 d = "right";
             }    
+            if(d == "right")
+                changed = true;
         }    
         else
         {
-            if(d != "right")
+            if(old_d != "right")
             {
-                changed = true;
                 d = "left";
             }   
+            if(d == "left")
+                changed = true;
         }   
     }
     //console.log(snake[0],food_pos,d,changed);
+    let prob_head = make_new_head();
+    if(changed == true)
+        changed = !check_game_over(prob_head) ;
     if(changed == false)
     {
         if(snake[0].y != food_pos.y)
         {
             if(snake[0].y < food_pos.y)
             {
-                if(d != "up")
+                if(old_d != "up")
                 {
-                    changed = true;
                      d = "down";
                 }   
+                if(d == "down")
+                    changed = true;
             }   
             else
             {
-                if(d != "down")
+                if(old_d != "down")
                 {
-                    changed = true;
                     d = "up";
                 }     
+                if(d == "up")
+                    changed = true;
             }
         }
     }
     prob_head = make_new_head();
-    changed = !check_game_over(prob_head) ;
+    if(changed == true)
+        changed = !check_game_over(prob_head) ;
     if(changed == false)
     {
-        if((d == "right") || (d == "left"))
+        if((old_d == "right") || (old_d == "left"))
         {
             d = "down" ;
             prob_head = make_new_head();
-            if(check_game_over(prob_head))
+            if(check_game_over(prob_head) == true)
                 d = "up";
         }
         else
         {
             d = "right";
             prob_head = make_new_head();
-            if(check_game_over(prob_head))
+            if(check_game_over(prob_head) == true)
                 d = "left";
         }
+        prob_head = make_new_head();
+        if(check_game_over(prob_head) == true)   
+            d = old_d ; 
     }
-    //console.log("req_dir() called",d);
 }
 
 function f_game_over() {
