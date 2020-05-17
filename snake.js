@@ -115,6 +115,8 @@ back_btn.addEventListener("click",reload);
 main_page_game_btn[0].addEventListener("click",init);
 main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
+window.addEventListener("resize",reload);
+window.addEventListener("orientationchange",reload);
 clicked();
 if (window.matchMedia("(max-width: 500px)").matches)
 {
@@ -161,7 +163,6 @@ function init(event) {
 function media() {
     
 }
-window.addEventListener("resize",reload);
 function start() {
 
     let form = document.getElementById("list_levels");
