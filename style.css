@@ -15,7 +15,8 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  font-family: "Poppins" , sans-serif;  
+  font-family: "Poppins" , sans-serif;
+  transform: rotateZ(0deg);  
 }
 html {
   scroll-behavior: smooth;
