@@ -117,6 +117,10 @@ main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
 window.addEventListener("resize",reload);
 window.addEventListener("orientationchange",reload);
+
+//to prevent scrolling
+document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
+
 clicked();
 if (window.matchMedia("(max-width: 500px)").matches)
 {
