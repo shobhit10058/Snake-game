@@ -16,7 +16,6 @@ height: 100vh;
 width: 100vw;
 overflow: hidden;
 font-family: "Poppins" , sans-serif;
-transform: rotateZ(-90deg);
 }
 html {
 scroll-behavior: smooth;
@@ -278,10 +277,10 @@ color: rgb(247, 49, 15);
   rgba(0,255,0,1),
   #1b572b);
   box-shadow: 0 1rem 3rem rgba(0,0,0,0.5);
-  border-left: 1rem solid red;
-  transition: transform 1.4s ease;
   border-radius: 3px;
   transform-origin: left;
+  border-left: 1rem solid red;
+  transition: transform 1.4s ease;
 }
 
 .title{
