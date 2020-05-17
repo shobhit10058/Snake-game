@@ -479,5 +479,6 @@ function f_game_over() {
 }
 
 function reload() {
+    alert("refreshing");
     location.reload();
 }
