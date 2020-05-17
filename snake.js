@@ -12,8 +12,8 @@ canvas.width = width_grid * box;
 canvas.height = width_grid * box;
 
 let food_pos = {
-    x : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box + off,
-    y : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box
+    x: 4 * box ,
+    y:4 * box
 }
 
 let snake = [];
@@ -23,6 +23,7 @@ snake[0] = {
 }
 
 let d = "right" ;
+let dir_set = false;
 let count = 0;
 let speed = (box * 1000)/time_interval_calling_function;
 var calling_btn;
@@ -35,6 +36,7 @@ let crawling = new Audio();
 let game_over = new Audio();
 let click_sound = new Audio();
 
+let background = document.getElementsByClassName("background")[0];
 let score_card = document.getElementById("score");
 let score_box = document.getElementById("score_box");
 let speed_card = document.getElementById("speed");
@@ -51,6 +53,17 @@ let count_box = document.getElementById("count");
 let submit_level = document.getElementById("submit_level");
 let div_choose_level = document.getElementsByClassName("choose_level")[0];
 
+var key;//level
+let no_of_blocks = (width_grid * width_grid)/10;
+let sites_of_blocks = new Array(width_grid);
+for(let x = 0 ; x < width_grid; x ++)
+{
+    sites_of_blocks[x] = new Array(width_grid);
+    for(let y = 0; y < width_grid ; y ++)
+    {
+        sites_of_blocks[x][y] = 0;
+    }
+}
 score_box.insertAdjacentElement('afterend',canvas);
 
 const cvs = document.getElementById("snake");
@@ -87,7 +100,7 @@ const style_game_over_st = {
 }
 
 const style_turning_page = {
-    transform: "translateX(-50%) rotateY(180deg)",
+    transform: "translate(-50%,-50%) rotateY(-180deg)",
     opacity: "0"
 }
 clearInterval(game);
@@ -103,28 +116,55 @@ main_page_game_btn[0].addEventListener("click",init);
 main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
 clicked();
-    
+if (window.matchMedia("(max-width: 500px)").matches)
+{
+    main_page[0].style.height = "100vh";
+    main_page[0].style.width = "100vw";
+    cvs.style.height = "340px";
+    cvs.style.width = "340px";
+}    
 function init(event) {
     console.log(event.currentTarget);
     if(event.currentTarget != reset_btn)
         calling_btn = event.currentTarget;
+    background.style.filter = "none";
     Object.assign(main_page[0].style,style_turning_page);
     Object.assign(reset_btn.style,style_reset_btn_st);
     Object.assign(game_over_card.style,style_game_over_st);
-    draw_canvas();
-    food_pos = {
-        x : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box,
-        y : (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box
+    //sites_of_blocks initialiasation
+    for(let x = 0 ; x < width_grid; x ++)
+    {
+        for(let y = 0; y < width_grid ; y ++)
+        {
+            sites_of_blocks[x][y] = 0;
+        }
     }
+    //selecting blocks randomly
+    random_blocks();
+
+    draw_canvas();
+    let x = Math.floor(Math.random() * (width_grid - 3) + 2);
+    let y = Math.floor(Math.random() * (width_grid - 3) + 2);
+    console.log(x,y);
+    while(sites_of_blocks[x][y] == 1)
+    {
+        x = Math.floor(Math.random() * (width_grid - 3) + 2);
+        y = Math.floor(Math.random() * (width_grid - 3) + 2);
+    } 
+    food_pos.x = x * box;
+    food_pos.y = y * box;
     div_choose_level.style.display = "block";
     submit_level.addEventListener("click",start);
     window.removeEventListener("keydown",control);
 }
 
+function media() {
+    
+}
+
 function start() {
 
     let form = document.getElementById("list_levels");
-    var key;
     for(i = 0; i < form.length ; i ++)
     {
         if(form.elements[i].checked == true)
@@ -163,7 +203,8 @@ function clicked() {
 function auxilary() {
     score_box.style.transform = "translate(0%,-100%)";
     speed_box.style.transform = "translate(0%,-100%)";
-    back_btn.style.top = "100%"; 
+    back_btn.style.transform = "translate(-50%,-100%)";
+    background.style.filter = "blur(3px) brightness(70%)";
     d = "right";
     let ori_len = snake.length;
     for(i = 1 ;i < ori_len; i ++)
@@ -213,13 +254,32 @@ function control(event)
     window.removeEventListener("keydown",control);
 }
 
+function random_blocks(){
+    let mid = Math.floor(width_grid/2),m_mid = Math.floor(mid/2);
+    console.log(mid);
+    // for(let x = 0; x <=mid; x+=2)
+    // {
+    //     sites_of_blocks[mid - x][2*x] = sites_of_blocks[mid + x][2*x] = 1;
+    // }
+    // if(key == "Hard")
+    // {
+    //     sites_of_blocks[mid][3 * Math.floor(width_grid/4)] = 1;
+    //     sites_of_blocks[mid][0] = 0;
+    // }    
+    sites_of_blocks[mid - m_mid][mid - m_mid] = sites_of_blocks[[mid - m_mid]][mid + m_mid] = sites_of_blocks[mid + m_mid][mid - m_mid] = sites_of_blocks[[mid + m_mid]][mid + m_mid] = sites_of_blocks[mid][mid] = 1; 
+}
+
 function draw_canvas() {
     //grid
     for(let x = 0; x < width_grid  ; x ++)
     {
         for(let y = 0; y < width_grid ; y ++)
         {
-            if(x % 2)
+            if(sites_of_blocks[x][y] == 1)
+            {
+                ctx.fillStyle = "rgb(255,0,255)";
+            }
+            else if(x % 2)
             {
                 if(y % 2 )
                     ctx.fillStyle = "#00FF00";
@@ -239,11 +299,9 @@ function draw_canvas() {
 }
 
 function draw(){
-
     //grid
     draw_canvas();
     ctx.drawImage(food,food_pos.x,food_pos.y,box,box);
-
     //snake
     for(i = 0 ; i < snake.length; i++){
         ctx.fillStyle = ( i == 0) ? "red":"black" ;
@@ -260,6 +318,7 @@ function draw(){
     {
         req_dir();
     }
+
     let new_head = make_new_head();
 
     if(check_game_over(new_head) == true)
@@ -277,7 +336,7 @@ function draw(){
         score_card.innerHTML = score;
         food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
         food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
-        while((food_pos.x == new_head.x) && (food_pos.y == new_head.y))
+        while(((food_pos.x == new_head.x) && (food_pos.y == new_head.y))||(sites_of_blocks[food_pos.x/box][food_pos.y/box] == 1))
         {
             food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
             food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;       
@@ -289,7 +348,6 @@ function draw(){
         snake.pop();
     }
 }
-
 function make_new_head() {
     let new_x = snake[0].x;
     let new_y = snake[0].y;
@@ -307,14 +365,6 @@ function make_new_head() {
 
 function check_game_over(head) {
     //game over or pause
-    for(i = 1; i < snake.length - 1;i ++ )
-    {
-        if((head.x == snake[i].x) && (head.y == snake[i].y))
-        {
-            return true;
-        }    
-    }
-
     if((head.x < off) || (head.x >= (width_grid * box)))
     {
         return true;
@@ -324,6 +374,15 @@ function check_game_over(head) {
     {
         return true;
     }    
+    if(sites_of_blocks[head.x/box][head.y/box] == 1)
+        return true;
+    for(i = 1; i < snake.length - 1;i ++ )
+    {
+        if((head.x == snake[i].x) && (head.y == snake[i].y))
+        {
+            return true;
+        }    
+    }
     return false;
 }
 
@@ -407,6 +466,7 @@ function req_dir() {
 function f_game_over() {
     console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
+    back_btn.style.transform = "translate(-50%,0%)";
     game_over.play();
     fin_score.innerHTML = score;
     score_box.style.transform = "translate(0%,0%)"

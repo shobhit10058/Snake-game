@@ -9,12 +9,12 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="">
         <link rel="shortcut icon" type="image/jpg" href="img/logo.jpg">
+        <link rel="manifest" href="manifest.json">
         <title>Snake Challenge</title>
     </head>
 
     <body>
         <div class="background">
-            <h1>Take the Challenge?</h1>
         </div>
         <div class="game">            
             <div id="speed_box">
@@ -36,24 +36,27 @@
                 <p id="count"></p>
             </div>
             <button class="btn_reset" >Play again &rarr;</button>
-            <button class="btn_back" >Back &larr;</button>
+            <button class="btn_back" >Back &larr;</button>        
+            <div class="choose_level">
+                <h3 class="level_heading">Choose a level</h3>
+                <form id="list_levels">
+                    <input type="radio" id="Easy" name="level" value="Easy" class="level">
+                    <label for="Easy" class="label_level ">Easy</label><br>
+                    <input type="radio" id="Medium" name="level" value="Medium" class="level">
+                    <label for="Medium" class="label_level ">Medium</label><br>
+                    <input type="radio" id="Hard" name="level" value="Hard" class="level" checked="checked">
+                    <label for="Hard" class="label_level ">Hard</label>
+                </form>
+    
+                <button id="submit_level" class="btn_submit" >Play</button>
+            </div>
+    
         </div>
-        <div class="choose_level">
-            <h3 class="level_heading">Choose a level</h3>
-            <form id="list_levels">
-                <input type="radio" id="Easy" name="level" value="Easy" class="level">
-                <label for="Easy" class="label_level ">Easy</label><br>
-                <input type="radio" id="Medium" name="level" value="Medium" class="level">
-                <label for="Medium" class="label_level ">Medium</label><br>
-                <input type="radio" id="Hard" name="level" value="Hard" class="level" checked="checked">
-                <label for="Hard" class="label_level ">Hard</label>
-            </form>
 
-            <button id="submit_level" class="btn_submit" >Play</button>
-        </div>
-        
-        <div class="cover">
             <div class="home_page">
+                <div class="title">
+                    <h1 >Take the Challenge?</h1>
+                </div>
                 <ul class="list_options">
                     <li ><button class="options options--1">New game</button></li>
                     <li ><button class="options options--2">Quick Demo</button></li>
@@ -61,7 +64,7 @@
                     <li ><button class="options options--3">Instructions</button></li>
                 </ul>
             </div>
-        </div>
+        
         <script src="snake.js"></script>
     </body>
 </html>
