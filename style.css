@@ -11,7 +11,7 @@ body {
   font-size: 1.6rem;
   perspective: 1000px;
   line-height: 1.7;
-  overflow: hidden;
+  overflow-y: hidden;
   height: 100vh;
   font-family: "Poppins" , sans-serif;
 }
