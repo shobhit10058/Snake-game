@@ -16,6 +16,7 @@ body {
   width: 100vw;
   overflow: hidden;
   font-family: "Poppins" , sans-serif;
+  transform: rotateZ(-90deg);
 }
 html {
   scroll-behavior: smooth;
