@@ -12,6 +12,7 @@ body {
   perspective: 1000px;
   line-height: 1.7;
   overflow-y: hidden;
+  position: fixed;
   height: 100vh;
   font-family: "Poppins" , sans-serif;
 }
