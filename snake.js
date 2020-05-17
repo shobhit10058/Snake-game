@@ -121,13 +121,6 @@ window.addEventListener("orientationchange",reload);
 document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
 
 clicked();
-if (window.matchMedia("(max-width: 500px)").matches)
-{
-    main_page[0].style.height = "100vh";
-    main_page[0].style.width = "99.9vw";
-    cvs.style.height = "340px";
-    cvs.style.width = "340px";
-}    
 function init(event) {
     console.log(event.currentTarget);
     if(event.currentTarget != reset_btn)

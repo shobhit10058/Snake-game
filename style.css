@@ -10,22 +10,16 @@ body {
           box-sizing: border-box;
   font-size: 1.6rem;
   perspective: 1000px;
+  position: fixed;
   line-height: 1.7;
-  overflow-y: hidden;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   font-family: "Poppins" , sans-serif;
 }
 html {
   scroll-behavior: smooth;
   font-size: 62.54%;
-}
-
-@media only screen and (max-width : 500px)
-{
-  html {
-    scroll-behavior: smooth;
-    font-size: 50%;
-  }
 }
 
 .game{
@@ -335,4 +329,21 @@ html {
 
 .options:hover{
   transform: translateY(-3px);
+}
+
+
+@media only screen and (max-width : 500px)
+{
+  html {
+    scroll-behavior: smooth;
+    font-size: 50%;
+  }
+  .home_page{
+    width: 100vw;
+    height: 100vh;
+  }
+  #snake{
+      width: 340px;
+      height: 340px;
+  }
 }
