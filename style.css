@@ -284,7 +284,7 @@ html {
     #1b572b);
     box-shadow: 0 1rem 3rem rgba(0,0,0,0.5);
     border-left: 1rem solid red;
-    transition: all 1.4s ease;
+    transition: transform 1.4s ease;
     border-radius: 3px;
     transform-origin: left;
 }
