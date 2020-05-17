@@ -103,6 +103,11 @@ const style_turning_page = {
     transform: "translate(-50%,-50%) rotateY(-180deg)",
     opacity: "0"
 }
+
+const reset_turning = {
+    transform: "translate(-50%,-50%) rotateY(0deg)",
+    opacity: "1"
+}
 clearInterval(game);
 
 food_audio.src = "audio/eating_food.wav";
@@ -475,5 +480,10 @@ function f_game_over() {
 }
 
 function reload() {
-    location.reload();
+    f_game_over();
+    div_choose_level.style.display = "none";
+    setTimeout(function(){
+        Object.assign(main_page[0].style,reset_turning);
+    },1500);
 }
+
