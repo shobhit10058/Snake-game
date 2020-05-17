@@ -38,7 +38,7 @@ html {
 .background{
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: 99.9vh;
   background-image: linear-gradient(to bottom,
   #00FF00,
   white),url(img/jungle.jpg);

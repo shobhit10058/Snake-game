@@ -119,7 +119,7 @@ clicked();
 if (window.matchMedia("(max-width: 500px)").matches)
 {
     main_page[0].style.height = "100vh";
-    main_page[0].style.width = "100vw";
+    main_page[0].style.width = "99.9vw";
     cvs.style.height = "340px";
     cvs.style.width = "340px";
 }    
@@ -161,7 +161,7 @@ function init(event) {
 function media() {
     
 }
-
+window.addEventListener("resize",reload);
 function start() {
 
     let form = document.getElementById("list_levels");
