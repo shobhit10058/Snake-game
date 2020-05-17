@@ -15,8 +15,11 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  font-family: "Poppins" , sans-serif;
-  transform: rotateZ(-90deg);
+  font-family: "Poppins" , sans-serif;         
+  -moz-transform:rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
+  -ms-transform:rotate(-90deg);
+  transform: rotate(-90deg);
 }
 html {
   scroll-behavior: smooth;
@@ -27,6 +30,8 @@ html {
     position: absolute;
     left: 50%;
     top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
 }
 
