@@ -27,8 +27,8 @@ html {
     position: absolute;
     left: 50%;
     top: 50%;
-    -ms-transform: translate(-50%,-50%);
-    -webkit-transform: translate(-50%,-50%);
+    /* -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%); */
     transform: translate(-50%,-50%);
 }
 
@@ -51,8 +51,8 @@ html {
     position: absolute;
     top: 50%;
     left: 50%;
-    -ms-transform: translate(-50%,-50%);
-    -webkit-transform: translate(-50%,-50%);
+    /* -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%); */
     transform: translate(-50%,-50%);
     text-align: center;
     display: none;
@@ -88,8 +88,8 @@ html {
   #00FF00,
   #1b572b);
   color: white;
-  -ms-transform: translateY(-2px);
-  -webkit-transform: translateY(-2px);
+  /* -ms-transform: translateY(-2px);
+  -webkit-transform: translateY(-2px); */
   transform: translateY(-2px);
 }
 
@@ -286,9 +286,9 @@ html {
     #1b572b);
     box-shadow: 0 1rem 3rem rgba(0,0,0,0.5);
     border-left: 1rem solid red;
-    -moz-transform:transform 1.4s ease;
+    /* -moz-transform:transform 1.4s ease;
     -webkit-transform:transform 1.4s ease;
-    -ms-transform:transform 1.4s ease;
+    -ms-transform:transform 1.4s ease; */
     transform: transform 1.4s ease;
     border-radius: 3px;
     transform-origin: left;
@@ -307,9 +307,9 @@ html {
   z-index: 1000;
   transform-origin: left;
   letter-spacing: 1.5px;
-  -moz-transform:rotateZ(-90deg) translateX(-100%);
+  /* -moz-transform:rotateZ(-90deg) translateX(-100%);
   -webkit-transform:rotateZ(-90deg) translateX(-100%);
-  -ms-transform:rotateZ(-90deg) translateX(-100%);
+  -ms-transform:rotateZ(-90deg) translateX(-100%); */
   transform: rotateZ(-90deg) translateX(-100%);
   /*letter-spacing: 2px; */
 }
