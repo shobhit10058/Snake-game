@@ -115,7 +115,6 @@ back_btn.addEventListener("click",reload);
 main_page_game_btn[0].addEventListener("click",init);
 main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
-window.addEventListener("resize",reload);
 window.addEventListener("orientationchange",reload);
 
 //to prevent scrolling
