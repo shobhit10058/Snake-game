@@ -280,7 +280,7 @@ color: rgb(247, 49, 15);
   border-radius: 3px;
   transform-origin: left;
   border-left: 1rem solid red;
-  transition: transform 1.4s ease;
+  transition: all 1.4s ease;
 }
 
 .title{
