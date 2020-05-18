@@ -57,6 +57,7 @@ let div_choose_level = document.getElementsByClassName("choose_level")[0];
 var key;//level
 let no_of_blocks = (width_grid * width_grid)/10;
 let sites_of_blocks = new Array(width_grid);
+let count_i;
 for(let x = 0 ; x < width_grid; x ++)
 {
     sites_of_blocks[x] = new Array(width_grid);
@@ -160,6 +161,7 @@ function init(event) {
     div_choose_level.style.display = "block";
     submit_level.addEventListener("click",start);
     window.removeEventListener("keydown",control);
+    click_on_back = false;
 }
 
 function media() {
@@ -189,8 +191,6 @@ function start() {
     div_choose_level.style.display = "none";
     count = 0;
     count_i = setInterval(counting,1000);
-    if(click_on_back )
-        setTimeout(auxilary,5000);
 }
 
 function clicked() {
@@ -232,6 +232,7 @@ function counting() {
     }    
     else{
         count_box.innerHTML = "";
+        auxilary();
         clearInterval(count_i);
     }
 }
@@ -261,16 +262,29 @@ function control(event)
 function random_blocks(){
     let mid = Math.floor(width_grid/2),m_mid = Math.floor(mid/2);
     // console.log(mid);
-    // for(let x = 0; x <=mid; x+=2)
-    // {
-    //     sites_of_blocks[mid - x][2*x] = sites_of_blocks[mid + x][2*x] = 1;
-    // }
+    x = Math.floor(Math.random() * (3) + 2);
+    y = Math.floor(Math.random() * (3) + 2);
+    sites_of_blocks[x][y] = 1;
+
+    
+    x = Math.floor(Math.random() * (4) + 8);
+    y = Math.floor(Math.random() * (3) + 2);
+    sites_of_blocks[x][y] = 1;
+
+    
+    y = Math.floor(Math.random() * (4) + 8);
+    x = Math.floor(Math.random() * (3) + 2);
+    sites_of_blocks[x][y] = 1;
+
+    y = Math.floor(Math.random() * (4) + 8);
+    x = Math.floor(Math.random() * (4) + 8);
+    sites_of_blocks[x][y] = 1;
     // if(key == "Hard")
     // {
     //     sites_of_blocks[mid][3 * Math.floor(width_grid/4)] = 1;
     //     sites_of_blocks[mid][0] = 0;
     // }    
-    sites_of_blocks[mid - m_mid][mid - m_mid] = sites_of_blocks[[mid - m_mid]][mid + m_mid] = sites_of_blocks[mid + m_mid][mid - m_mid] = sites_of_blocks[[mid + m_mid]][mid + m_mid] = sites_of_blocks[mid][mid] = 1; 
+    //sites_of_blocks[mid - m_mid][mid - m_mid] = sites_of_blocks[[mid - m_mid]][mid + m_mid] = sites_of_blocks[mid + m_mid][mid - m_mid] = sites_of_blocks[[mid + m_mid]][mid + m_mid] = sites_of_blocks[mid][mid] = 1; 
 }
 
 function draw_canvas() {
