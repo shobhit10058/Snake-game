@@ -130,6 +130,7 @@ function init(event) {
         calling_btn = event.currentTarget;
     background.style.filter = "none";
     fin_score.innerHTML = 0; 
+    score = 0;
     Object.assign(main_page[0].style,style_turning_page);
     Object.assign(reset_btn.style,style_reset_btn_st);
     Object.assign(game_over_card.style,style_game_over_st);
@@ -479,14 +480,14 @@ function f_game_over() {
 }
 
 function reload() {
-    if(div_choose_level.style.display == "block")
-        fin_score.innerHTML = 0; 
     if(game_over_card.style.visibility != "visible")
     {
         f_game_over();
     }   
     else
         Object.assign(main_page[0].style,reset_turning);
+    if(div_choose_level.style.display == "block")
+        fin_score.innerHTML = 0; 
     div_choose_level.style.display = "none";
     setTimeout(function(){
         Object.assign(main_page[0].style,reset_turning);
