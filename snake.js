@@ -129,6 +129,7 @@ function init(event) {
     if(event.currentTarget != reset_btn)
         calling_btn = event.currentTarget;
     background.style.filter = "none";
+    fin_score.innerHTML = 0; 
     Object.assign(main_page[0].style,style_turning_page);
     Object.assign(reset_btn.style,style_reset_btn_st);
     Object.assign(game_over_card.style,style_game_over_st);
@@ -215,7 +216,6 @@ function auxilary() {
     score = 0;
     score_card.innerHTML = score;
     speed_card.innerHTML = speed.toString() + " px/s";
-    fin_score.innerHTML = 0; 
     game = setInterval(draw,time_interval_calling_function);
 }
 
