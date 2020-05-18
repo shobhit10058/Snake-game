@@ -24,6 +24,7 @@ snake[0] = {
 
 let d = "right" ;
 let dir_set = false;
+let click_on_back = false;
 let count = 0;
 let speed = (box * 1000)/time_interval_calling_function;
 var calling_btn;
@@ -188,7 +189,8 @@ function start() {
     div_choose_level.style.display = "none";
     count = 0;
     count_i = setInterval(counting,1000);
-    setTimeout(auxilary,5000);
+    if(click_on_back )
+        setTimeout(auxilary,5000);
 }
 
 function clicked() {
@@ -480,6 +482,9 @@ function f_game_over() {
 }
 
 function reload() {
+    count_box.innerHTML = "";
+    clearInterval(count_i);
+    click_on_back = true;
     if(game_over_card.style.visibility != "visible")
     {
         f_game_over();
