@@ -15,7 +15,6 @@ line-height: 1.7;
 height: 100vh;
 width: 100vw;
 overflow: hidden;
-font-family: "Poppins" , sans-serif;
 }
 html {
 scroll-behavior: smooth;
@@ -118,7 +117,7 @@ transform: translateY(-2px);
 #counter p{
   color: white;
   font-size: 4rem;
-  font-family: 'Modak',cursive;
+  font-family: 'Pangolin', cursive;
 }
 
 #score_box,#speed_box{
@@ -145,8 +144,8 @@ color: white;
 
 #score,#speed{
   background-color: white;
-  font-family: 'Libre Caslon Text', serif;
-  font-weight: 900;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
   border-radius: 2px;
   padding:3px 5px;
 }
@@ -236,7 +235,7 @@ box-shadow: 1rem 2rem 3rem rgba(0,0,0,0.8);
   color: white;
   text-transform: uppercase;
   font-weight: 400;
-  font-family: 'Alfa Slab One', cursive;
+  font-family: 'Josefin Sans', sans-serif;;
   letter-spacing: 4px;
 }
 #game_over_score_box{
@@ -318,7 +317,7 @@ transform: rotateZ(-90deg) translateX(-100%);
   outline: none;
   font-size: 1.8rem;
   letter-spacing: 3px;
-  font-family: 'poppins',cursive;
+  font-family: 'Josefin Sans', sans-serif;
   text-transform: uppercase;
   border-radius: 4px;
   color: rgb(0,100,0);
@@ -333,17 +332,33 @@ transform: translateY(-3px);
 
 
 @media only screen and (max-width : 500px)
+  {
+  html {
+    scroll-behavior: smooth;
+    font-size: 50%;
+  }
+  .home_page{
+    width: 400px;
+    height: 400px;
+  }
+  #snake{
+      width: 340px;
+      height: 340px;
+  }
+}
+
+@media only screen and (max-width : 400px)
 {
-html {
-  scroll-behavior: smooth;
-  font-size: 50%;
-}
-.home_page{
-  width: 100vw;
-  height: 100vh;
-}
-#snake{
-    width: 340px;
-    height: 340px;
-}
+  html {
+    scroll-behavior: smooth;
+    font-size: 38%;
+  }
+  .home_page{
+    width: 300px;
+    height: 300px;
+  }
+  #snake{
+      width: 300px;
+      height: 300px;
+  }
 }

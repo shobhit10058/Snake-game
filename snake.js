@@ -122,8 +122,6 @@ main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
 window.addEventListener("orientationchange",reload);
 
-//to prevent scrolling
-document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
 
 clicked();
 function init(event) {
@@ -480,7 +478,14 @@ function f_game_over() {
 }
 
 function reload() {
-    f_game_over();
+    if(div_choose_level.style.display == "block")
+        fin_score.innerHTML = 0; 
+    if(game_over_card.style.visibility != "visible")
+    {
+        f_game_over();
+    }   
+    else
+        Object.assign(main_page[0].style,reset_turning);
     div_choose_level.style.display = "none";
     setTimeout(function(){
         Object.assign(main_page[0].style,reset_turning);
