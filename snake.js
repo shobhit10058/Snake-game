@@ -215,6 +215,7 @@ function auxilary() {
     score = 0;
     score_card.innerHTML = score;
     speed_card.innerHTML = speed.toString() + " px/s";
+    fin_score.innerHTML = 0; 
     game = setInterval(draw,time_interval_calling_function);
 }
 
