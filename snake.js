@@ -125,7 +125,7 @@ window.addEventListener("orientationchange",reload);
 
 clicked();
 function init(event) {
-    console.log(event.currentTarget);
+    // console.log(event.currentTarget);
     if(event.currentTarget != reset_btn)
         calling_btn = event.currentTarget;
     background.style.filter = "none";
@@ -146,7 +146,7 @@ function init(event) {
     draw_canvas();
     let x = Math.floor(Math.random() * (width_grid - 3) + 2);
     let y = Math.floor(Math.random() * (width_grid - 3) + 2);
-    console.log(x,y);
+    // console.log(x,y);
     while(sites_of_blocks[x][y] == 1)
     {
         x = Math.floor(Math.random() * (width_grid - 3) + 2);
@@ -170,7 +170,7 @@ function start() {
         if(form.elements[i].checked == true)
             key = form.elements[i].value ;
     }
-    console.log(key);
+    // console.log(key);
     switch (key) {
         case "Easy": time_interval_calling_function = 250;
                         break;
@@ -256,7 +256,7 @@ function control(event)
 
 function random_blocks(){
     let mid = Math.floor(width_grid/2),m_mid = Math.floor(mid/2);
-    console.log(mid);
+    // console.log(mid);
     // for(let x = 0; x <=mid; x+=2)
     // {
     //     sites_of_blocks[mid - x][2*x] = sites_of_blocks[mid + x][2*x] = 1;
@@ -464,7 +464,7 @@ function req_dir() {
 }
 
 function f_game_over() {
-    console.log(snake[0].x,snake[0].y);
+    // console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
     back_btn.style.transform = "translate(-50%,0%)";
     game_over.play();
