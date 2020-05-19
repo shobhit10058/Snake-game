@@ -56,7 +56,6 @@ let count_box = document.getElementById("count");
 let submit_level = document.getElementById("submit_level");
 let div_choose_level = document.getElementsByClassName("choose_level")[0];
 let help = document.getElementsByClassName("help")[0];
-let body = document.getElementsByTagName("body")[0];
 
 var key;//level
 let no_of_blocks = (width_grid * width_grid)/10;
@@ -133,7 +132,7 @@ main_page_help_btn.addEventListener("click",show_help);
 // screen.mozLockOrientation.lock("portrait-primary");
 clicked();
 
-swipedetect(body, function(swipedir){
+swipedetect(cvs, function(swipedir){
     //swipedir contains either "none", "left", "right", "top", or "down"
     if((swipedir == "left") && (d != "right"))
     {
