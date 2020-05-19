@@ -427,8 +427,12 @@ h1:first-child{
     scroll-behavior: smooth;
     font-size: 32%;
   }
-  .home_page,.help,#snake{
-      width: 260px;
-      height: 260px;
+  .home_page{
+    width: 260px;
+    height: 260px;
+  }
+  .help,#snake{
+      width: 240px;
+      height: 240px;
   }
 }
