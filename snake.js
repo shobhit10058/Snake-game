@@ -132,7 +132,13 @@ main_page_help_btn.addEventListener("click",show_help);
 // screen.mozLockOrientation.lock("portrait-primary");
 clicked();
 
+swipedetect(background, function(swipedir){
+    change_dir(swipedir);
+})  
 swipedetect(cvs, function(swipedir){
+    change_dir(swipedir);
+})  
+function change_dir(swipedir){
     //swipedir contains either "none", "left", "right", "top", or "down"
     if((swipedir == "left") && (d != "right"))
     {
@@ -150,7 +156,7 @@ swipedetect(cvs, function(swipedir){
     {
         d = "down" ;
     }
-})  
+}
 function init(event) {
     // console.log(event.currentTarget);
     game_start = true;
