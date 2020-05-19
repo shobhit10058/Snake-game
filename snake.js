@@ -126,7 +126,28 @@ main_page_game_btn[0].addEventListener("click",init);
 main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
 main_page_help_btn.addEventListener("click",show_help);
+
 clicked();
+
+swipedetect(cvs, function(swipedir){
+    //swipedir contains either "none", "left", "right", "top", or "down"
+    if((swipedir == "left") && (d != "right"))
+    {
+        d = "left";
+    }
+    else if((swipedir == "up")&& (d != "down"))
+    {
+        d = "up" ;
+    }
+    else if((swipedir == "right")&& (d != "left"))
+    {
+        d = "right" ;
+    }
+    else if((swipedir == "down")&& (d != "up"))
+    {
+        d = "down" ;
+    }
+})  
 function init(event) {
     // console.log(event.currentTarget);
     game_start = true;
@@ -332,26 +353,7 @@ function draw(){
     }
     if(calling_btn != main_page_demo_btn)
     {
-        window.addEventListener("keydown",control) ;
-        swipedetect(cvs, function(swipedir){
-            if((swipedir == "left") && (d != "right"))
-            {
-                d = "left";
-            }
-            else if((swipedir == "up")&& (d != "down"))
-            {
-                d = "up" ;
-            }
-            else if((swipedir == "right")&& (d != "left"))
-            {
-                d = "right" ;
-            }
-            else if((swipedir == "down")&& (d != "up"))
-            {
-                d = "down" ;
-            }
-            //swipedir contains either "none", "left", "right", "top", or "down"
-        })        
+        window.addEventListener("keydown",control) ;      
     }
     else
     {
