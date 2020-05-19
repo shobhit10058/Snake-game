@@ -404,7 +404,7 @@ h1:first-child{
     display: inline-block;
     background-color: rgb(255,0,255);
 }
-@media only screen and (max-width : 500px)
+@media only screen and (max-width : 500px),screen and (max-height : 500px)
   {
   html {
     scroll-behavior: smooth;
@@ -420,7 +420,7 @@ h1:first-child{
   }
 }
 
-@media only screen and (max-width : 400px)
+@media only screen and (max-width : 400px),screen and (max-height : 400px)
 {
   html {
     scroll-behavior: smooth;

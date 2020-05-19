@@ -1,4 +1,8 @@
 {
+    "name":"Snake Challenge",
+    "icon"{
+        "src":
+    }
     "display":      "standalone", /* Could be "fullscreen", "standalone", "minimal-ui", or "browser" */
     "orientation":  "portrait" /* Could be "landscape" or "portrait" */
 }
