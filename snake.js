@@ -127,6 +127,9 @@ main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
 main_page_help_btn.addEventListener("click",show_help);
 
+screen.orientation.lock("portrait-primary");
+screen.msLockOrientation.lock("portrait-primary");
+screen.mozLockOrientation.lock("portrait-primary");
 clicked();
 
 swipedetect(cvs, function(swipedir){
