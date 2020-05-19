@@ -425,10 +425,10 @@ h1:first-child{
 {
   html {
     scroll-behavior: smooth;
-    font-size: 35%;
+    font-size: 32%;
   }
   .home_page,.help,#snake{
-      width: 280px;
-      height: 280px;
+      width: 260px;
+      height: 260px;
   }
 }
