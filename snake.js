@@ -25,6 +25,7 @@ snake[0] = {
 let d = "right" ;
 let dir_set = false;
 let click_on_back = false;
+let game_start = false;
 let count = 0;
 let speed = (box * 1000)/time_interval_calling_function;
 var calling_btn;
@@ -48,11 +49,13 @@ let main_page = document.getElementsByClassName("home_page");
 let main_page_list = document.getElementsByClassName("list_options");
 let main_page_game_btn = document.getElementsByClassName("options--1");
 let main_page_demo_btn = document.getElementsByClassName("options--2")[0];
+let main_page_help_btn = document.getElementsByClassName("options--3")[0];
 let back_btn = document.getElementsByClassName("btn_back")[0];
 let reset_btn = document.getElementsByClassName("btn_reset")[0];
 let count_box = document.getElementById("count");
 let submit_level = document.getElementById("submit_level");
 let div_choose_level = document.getElementsByClassName("choose_level")[0];
+let help = document.getElementsByClassName("help")[0];
 
 var key;//level
 let no_of_blocks = (width_grid * width_grid)/10;
@@ -122,12 +125,12 @@ back_btn.addEventListener("click",reload);
 main_page_game_btn[0].addEventListener("click",init);
 main_page_demo_btn.addEventListener("click",init);
 reset_btn.addEventListener("click",init);
-window.addEventListener("orientationchange",reload);
-
+main_page_help_btn.addEventListener("click",show_help);
 
 clicked();
 function init(event) {
     // console.log(event.currentTarget);
+    game_start = true;
     if(event.currentTarget != reset_btn)
         calling_btn = event.currentTarget;
     background.style.filter = "none";
@@ -136,6 +139,9 @@ function init(event) {
     Object.assign(main_page[0].style,style_turning_page);
     Object.assign(reset_btn.style,style_reset_btn_st);
     Object.assign(game_over_card.style,style_game_over_st);
+    document.getElementsByClassName("game")[0].style.opacity = "1";
+    document.getElementsByClassName("game")[0].style.display = "block";
+    help.style.display = "none";
     //sites_of_blocks initialiasation
     for(let x = 0 ; x < width_grid; x ++)
     {
@@ -164,9 +170,6 @@ function init(event) {
     click_on_back = false;
 }
 
-function media() {
-    
-}
 function start() {
 
     let form = document.getElementById("list_levels");
@@ -499,17 +502,25 @@ function reload() {
     count_box.innerHTML = "";
     clearInterval(count_i);
     click_on_back = true;
-    if(game_over_card.style.visibility != "visible")
+    if((game_start) && (game_over_card.style.visibility != "visible"))
     {
         f_game_over();
-    }   
+        setTimeout(function(){
+            Object.assign(main_page[0].style,reset_turning);
+        },1500);
+    }
     else
         Object.assign(main_page[0].style,reset_turning);
-    if(div_choose_level.style.display == "block")
-        fin_score.innerHTML = 0; 
     div_choose_level.style.display = "none";
-    setTimeout(function(){
-        Object.assign(main_page[0].style,reset_turning);
-    },1500);
+    background.style.filter = "none";
+    game_start = false;
+    back_btn.style.transform = "translate(-50%,0%)";
 }
 
+
+function show_help() {
+    back_btn.style.transform = "translate(-50%,-100%)";
+    help.style.opacity = "1";
+    help.style.display = "block";
+    Object.assign(main_page[0].style,style_turning_page);
+}

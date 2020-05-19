@@ -26,6 +26,7 @@ font-size: 62.54%;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  transition: all 0.8s ease;
 }
 
 .background{
@@ -151,9 +152,9 @@ color: white;
 }
 
 #snake{
-filter : blur(3px) brightness(50%);
-box-shadow: 0 1rem 3rem rgba(0,0,0,0,0.4);
-transition: all 0.4s ease;
+  filter : blur(3px) brightness(50%);
+  box-shadow: 0 1rem 3rem rgba(0,0,0,0,0.4);
+  transition: all 0.4s ease;
 }
 
 .btn_reset{
@@ -202,7 +203,6 @@ position: absolute;
   transform: translate(-50%,0%);
   cursor: pointer;
   padding: 1rem 1.5rem ;
-  transition: all 0.4s ease;
   font-family: inherit;
   text-transform: uppercase;
   color: white;
@@ -212,6 +212,8 @@ position: absolute;
   letter-spacing: 4px;
   box-shadow: 1rem 2rem 2rem rgba(0,0,0,0.5);
   outline: none;
+  z-index: 1000;
+  transition: all 0.4s ease;
 }
 
 .btn_back:hover{
@@ -330,7 +332,78 @@ transform: rotateZ(-90deg) translateX(-100%);
 transform: translateY(-3px);
 }
 
-
+.help{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: white;
+    transform: translate(-50%,-50%);
+    opacity: 0;
+    display: none;
+    background-image: linear-gradient(to bottom,
+    rgba(0,255,0,1),
+    #1b572b);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.5);
+    border-radius: 3px;
+    padding:0 2rem;
+    width: 455px;
+    height: 455px;
+    transition: all 0.8s ease;
+}
+.help >*{
+  margin-bottom: 1rem;
+  padding:5px ;
+  padding-bottom: 1rem;
+  border-radius: 2px;
+  border: 1px solid white;
+}
+h1:first-child{
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.dir_help{
+  list-style-position: inside;
+}
+.dir_help h2{
+  color: red;
+}
+.dir_help::after{
+  clear: both;
+  content: "";
+  display: table;
+}
+.dir_help li{
+  position: relative;
+  width: 50%;
+  float: left;
+  padding: 0 2px;
+}
+.contr_but{
+  display: inline-block;
+  background-color: white;
+  color: black;
+  padding: 3px 5px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+} 
+.contr_but:hover{
+    transform: scale(1.1);
+}
+.food,.obstacle{
+    width: 2rem;
+    height: 2rem;
+    transform: translateY(30%) scale(1);
+    transition: all 0.2s ease;
+}
+.food:hover,.obstacle:hover{
+    transform: translateY(30%) scale(1.1);
+}
+.obstacle{
+    display: inline-block;
+    background-color: rgb(255,0,255);
+}
 @media only screen and (max-width : 500px)
   {
   html {
@@ -341,7 +414,7 @@ transform: translateY(-3px);
     width: 400px;
     height: 400px;
   }
-  #snake{
+  .help,#snake{
       width: 340px;
       height: 340px;
   }
@@ -351,14 +424,10 @@ transform: translateY(-3px);
 {
   html {
     scroll-behavior: smooth;
-    font-size: 38%;
+    font-size: 35%;
   }
-  .home_page{
-    width: 300px;
-    height: 300px;
-  }
-  #snake{
-      width: 300px;
-      height: 300px;
+  .home_page,.help,#snake{
+      width: 280px;
+      height: 280px;
   }
 }
