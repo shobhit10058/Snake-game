@@ -13,7 +13,7 @@ canvas.height = width_grid * box;
 
 let food_pos = {
     x: 4 * box ,
-    y:4 * box
+    y: 4 * box
 }
 
 let snake = [];
@@ -211,17 +211,16 @@ function start() {
     switch (key) {
         case "Easy": time_interval_calling_function = 250;
                         break;
-        case "Medium": time_interval_calling_function = 100;
+        case "Medium": time_interval_calling_function = 150;
                         break;
-        case "Hard": time_interval_calling_function = 50;
+        case "Hard": time_interval_calling_function = 100;
                         break;
         default:
             break;
     }
-    speed = (box * 1000)/time_interval_calling_function;
-    speed.toPrecision(2);
+    speed = Math.floor((box * 1000)/time_interval_calling_function);
     div_choose_level.style.display = "none";
-    count = 0;
+    count = 3;
     count_i = setInterval(counting,1000);
 }
 
@@ -255,10 +254,9 @@ function auxilary() {
 }
 
 function counting() {
-    count ++;
-    if(count <= 3)
+    if(count > 0)
         count_box.innerHTML = count;
-    else if(count == 4)
+    else if(count == 0)
     {
         count_box.innerHTML = "Go";
     }    
@@ -267,6 +265,7 @@ function counting() {
         auxilary();
         clearInterval(count_i);
     }
+    count --;
 }
 
 //control the snake
