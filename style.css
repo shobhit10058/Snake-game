@@ -21,9 +21,7 @@ scroll-behavior: smooth;
 font-size: 62.54%;
 }
 /* for mozilla */
-button{
-  border: none;
-}
+::-moz-focus-inner {border:0;}
 /*  */
 .game{
   position: absolute;
