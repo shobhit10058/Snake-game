@@ -438,80 +438,152 @@ function check_game_over(head) {
 function req_dir() {
     let changed = false;
     let old_d = d;
-    if(snake[0].x != food_pos.x)
+    // if(snake[0].x != food_pos.x)
+    // {
+    //     if(snake[0].x < food_pos.x)
+    //     {
+    //         if(old_d != "left")
+    //         {
+    //             d = "right";
+    //         }    
+    //         if(d == "right")
+    //             changed = true;
+    //     }    
+    //     else
+    //     {
+    //         if(old_d != "right")
+    //         {
+    //             d = "left";
+    //         }   
+    //         if(d == "left")
+    //             changed = true;
+    //     }   
+    // }
+    // //console.log(snake[0],food_pos,d,changed);
+    // let prob_head = make_new_head();
+    // if(changed == true)
+    //     changed = !check_game_over(prob_head) ;
+    // if(changed == false)
+    // {
+    //     if(snake[0].y != food_pos.y)
+    //     {
+    //         if(snake[0].y < food_pos.y)
+    //         {
+    //             if(old_d != "up")
+    //             {
+    //                  d = "down";
+    //             }   
+    //             if(d == "down")
+    //                 changed = true;
+    //         }   
+    //         else
+    //         {
+    //             if(old_d != "down")
+    //             {
+    //                 d = "up";
+    //             }     
+    //             if(d == "up")
+    //                 changed = true;
+    //         }
+    //     }
+    //}
+    prob_head = make_new_head();
+    changed = check_game_over(prob_head) ;
+
+    if( ((old_d == "right") || (old_d == "left")) )
     {
-        if(snake[0].x < food_pos.x)
+        if((changed) || ((food_pos.x == snake[0].x) && (!check_food_in_x()) ))
         {
-            if(old_d != "left")
-            {
-                d = "right";
-            }    
-            if(d == "right")
-                changed = true;
-        }    
-        else
-        {
-            if(old_d != "right")
-            {
-                d = "left";
-            }   
-            if(d == "left")
-                changed = true;
-        }   
-    }
-    //console.log(snake[0],food_pos,d,changed);
-    let prob_head = make_new_head();
-    if(changed == true)
-        changed = !check_game_over(prob_head) ;
-    if(changed == false)
-    {
-        if(snake[0].y != food_pos.y)
-        {
-            if(snake[0].y < food_pos.y)
-            {
-                if(old_d != "up")
-                {
-                     d = "down";
-                }   
-                if(d == "down")
-                    changed = true;
-            }   
+            if(food_pos.y > snake[0].y){
+                d = "down" ;
+                prob_head = make_new_head();
+                if(check_game_over(prob_head) == true)
+                    d = "up";
+            }
             else
             {
-                if(old_d != "down")
-                {
-                    d = "up";
-                }     
-                if(d == "up")
-                    changed = true;
+                d = "up";
+                prob_head = make_new_head();
+                if(check_game_over(prob_head) == true)
+                    d = "down";
+            }   
+        }
+    }
+    else
+    {
+        if((changed) || (food_pos.x != snake[0].x))
+        {
+            if(food_pos.x > snake[0].x)
+            {
+                d = "right";
+                prob_head = make_new_head();
+                if(check_game_over(prob_head) == true)
+                    d = "left";
+            }
+            else
+            {
+                d = "left";
+                prob_head = make_new_head();
+                if(check_game_over(prob_head) == true)
+                    d = "right";
             }
         }
     }
     prob_head = make_new_head();
-    if(changed == true)
-        changed = !check_game_over(prob_head) ;
-    if(changed == false)
-    {
-        if((old_d == "right") || (old_d == "left"))
-        {
-            d = "down" ;
-            prob_head = make_new_head();
-            if(check_game_over(prob_head) == true)
-                d = "up";
-        }
-        else
-        {
-            d = "right";
-            prob_head = make_new_head();
-            if(check_game_over(prob_head) == true)
-                d = "left";
-        }
-        prob_head = make_new_head();
-        if(check_game_over(prob_head) == true)   
-            d = old_d ; 
-    }
+    if(check_game_over(prob_head) == true)   
+        d = old_d ; 
 }
-
+function far_site_game_over(){
+    let new_snake = [];
+    for(i = 0 ; i < snake.length ; i++)
+    {
+        new_snake.push(snake[i]);
+    }
+    let old_d = d;
+    let prob_head = make_new_head();
+    while(!check_game_over(prob_head)){
+        new_snake.unshift(prob_head);
+        if((food_pos.x != new_snake[0].x) || (food_pos.y != new_snake[0].y))
+            new_snake.pop();
+        prob_head = make_new_head();
+    }
+    d = "up";
+    prob_head = make_new_head();
+    let b1 = check_game_over(prob_head);
+    d = "down";
+    prob_head = make_new_head();
+    let b2 = check_game_over(prob_head);
+    d = old_d;
+    return (!b1 && !b2);
+}
+function check_food_in_y()
+{
+    if(snake[0].y != food_pos.y)
+        return false;
+    let low = Math.floor(Math.min(food_pos.x,snake[0].x)/box);
+    let high = Math.floor(Math.max(food_pos.x,snake[0].x)/box);
+    let y = Math.floor(snake[0].y/box);
+    for(i = low; i <= high ; i ++)
+    {
+        if(sites_of_blocks[i][y] == 1)
+            return true;
+    }
+    return false;
+}
+function check_food_in_x()
+{
+    if(snake[0].x != food_pos.x)
+        return false;
+    let low = Math.floor(Math.min(food_pos.y,snake[0].y)/box);
+    let high = Math.floor(Math.max(food_pos.y,snake[0].y)/box);
+    let x = Math.floor(snake[0].x/box);
+    for(i = low; i <= high ; i ++)
+    {
+        if(sites_of_blocks[x][i] == 1)
+            return true;
+    }
+    return false;
+}
 function f_game_over() {
     // console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
