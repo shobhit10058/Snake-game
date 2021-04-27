@@ -400,7 +400,7 @@ function draw(){
         else
             req_dir();
     }
-
+    console.log(d);
     let new_head = make_new_head(snake, d);
     if(check_game_over(new_head, snake) == true)
     {
@@ -416,7 +416,7 @@ function draw(){
         score ++;
         score_card.innerHTML = score;
         let x = food_pos.x / box, y = food_pos.y / box;
-        let lim_dis = 2;
+        let lim_dis = 1;
         while(1){
             x = Math.floor(Math.random()*(width_grid - 2) + 1);
             y = Math.floor(Math.random()*(width_grid - 2) + 1);
@@ -428,6 +428,7 @@ function draw(){
                     if((nw_x >= 0) && (nw_x < width_grid) && (nw_y >= 0) && (nw_y < width_grid)){
                         tk |= sites_of_blocks[nw_x][nw_y];
                     }                    
+                    tk |= ((nw_x == snake[0].x) && (nw_y == snake[0].y));
                 }
             }
             if(!tk)
@@ -563,13 +564,13 @@ function Get_Dir_By_BFS(){
         x: food_pos.x,
         y: food_pos.y
     };
+    if(visited[st.x/box][st.y/box] == 0)
+        return;
     while((st != undefined) && (go_dirs[st.x/box][st.y/box] != "stop")){
         Found_dirs.push(go_dirs[st.x/box][st.y/box]);
         let go_to = par[st.x/box][st.y/box];
         st = go_to;
     }
-    if(Found_dirs.length == 0)
-        return;
     d = Found_dirs[Found_dirs.length - 1];
     Found_dirs.pop();
 }
