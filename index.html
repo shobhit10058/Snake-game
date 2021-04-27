@@ -36,21 +36,30 @@
                 <p id="count"></p>
             </div>
             <button class="btn_reset" >Play again &rarr;</button>
-            <button class="btn_back" >Back &larr;</button>        
+            <button class="btn_back" >Back &larr;</button>     
             <div class="choose_level">
                 <h3 class="level_heading">Choose a level</h3>
                 <form id="list_levels">
                     <input type="radio" id="Easy" name="level" value="Easy" class="level">
                     <label for="Easy" class="label_level ">Easy</label><br>
-                    <input type="radio" id="Medium" name="level" value="Medium" class="level">
+                    <input type="radio" id="Medium" name="level" value="Medium" class="level" checked="checked">
                     <label for="Medium" class="label_level ">Medium</label><br>
-                    <input type="radio" id="Hard" name="level" value="Hard" class="level" checked="checked">
+                    <input type="radio" id="Hard" name="level" value="Hard" class="level">
                     <label for="Hard" class="label_level ">Hard</label>
                 </form>
     
                 <button id="submit_level" class="btn_submit" >Play</button>
             </div>
-    
+            <div class="choose_strategy">
+                <h3 class="strategy_heading">Choose a Strategy</h3>
+                <form id="list_strategy">
+                    <input type="radio" id="Greedy" name="strategy" value="Greedy" class="strategy">
+                    <label for="Greedy" class="label_strategy ">Greedy</label><br>
+                    <input type="radio" id="BFS" name="strategy" value="BFS" class="strategy" checked="checked">
+                    <label for="BFS" class="label_strategy ">BFS</label><br>
+                </form>
+                <button id="submit_strategy" class="btn_submit" >Play</button>
+            </div>
         </div>
 
         <div class="help">

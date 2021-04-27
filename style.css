@@ -46,7 +46,7 @@ text-align: center;
 
 /* form */
 
-.choose_level{
+.choose_level, .choose_strategy{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -55,7 +55,7 @@ text-align: center;
   display: none;
 }
 
-.level_heading{
+.level_heading, .strategy_heading{
   color: white;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -63,11 +63,11 @@ text-align: center;
   font-size: 2.2rem;
 }
 
-.level{
+.level, .strategy{
 display: none;
 }
 
-.label_level{
+.label_level, .label_strategy{
 color: white;
 text-transform: uppercase;
 letter-spacing: 3px;
@@ -79,7 +79,7 @@ cursor: pointer;
 transition: transform 0.4s ease;
 }
 
-.level:checked +*{
+.level:checked +*, .strategy:checked +*{
 border: 2px solid tomato;
 background-image: linear-gradient(to right,
 #00FF00,
@@ -88,7 +88,7 @@ color: white;
 transform: translateY(-2px);
 }
 
-.level:checked +*:hover,.label_level:hover{
+.level:checked +*:hover,.label_level:hover, .strategy:checked +*:hover,.label_strategy:hover{
   transform: translateY(-5px);
 }
 

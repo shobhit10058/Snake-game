@@ -28,6 +28,10 @@ let click_on_back = false;
 let game_start = false;
 let count = 0;
 let speed = (box * 1000)/time_interval_calling_function;
+let found_dir = false;
+let strategy = "BFS";
+let dirs = ["left", "right", "down", "up"];
+let Found_dirs = [];
 var calling_btn;
 const food = new Image();
 food.src = "img/food.jpg" ; 
@@ -54,7 +58,9 @@ let back_btn = document.getElementsByClassName("btn_back")[0];
 let reset_btn = document.getElementsByClassName("btn_reset")[0];
 let count_box = document.getElementById("count");
 let submit_level = document.getElementById("submit_level");
+let submit_strategy = document.getElementById("submit_strategy");
 let div_choose_level = document.getElementsByClassName("choose_level")[0];
+let div_choose_strategy = document.getElementsByClassName("choose_strategy")[0];
 let help = document.getElementsByClassName("help")[0];
 
 var key;//level
@@ -157,8 +163,18 @@ function change_dir(swipedir){
         d = "down" ;
     }
 }
+
+function rev(d){
+    if(d == "left")
+        return "right";
+    if(d == "right")
+        return "left";
+    if(d == "up")
+        return "down";
+    return "up";
+}
+
 function init(event) {
-    // console.log(event.currentTarget);
     game_start = true;
     if(event.currentTarget != reset_btn)
         calling_btn = event.currentTarget;
@@ -185,7 +201,6 @@ function init(event) {
     draw_canvas();
     let x = Math.floor(Math.random() * (width_grid - 3) + 2);
     let y = Math.floor(Math.random() * (width_grid - 3) + 2);
-    // console.log(x,y);
     while(sites_of_blocks[x][y] == 1)
     {
         x = Math.floor(Math.random() * (width_grid - 3) + 2);
@@ -207,7 +222,6 @@ function start() {
         if(form.elements[i].checked == true)
             key = form.elements[i].value ;
     }
-    // console.log(key);
     switch (key) {
         case "Easy": time_interval_calling_function = 250;
                         break;
@@ -220,6 +234,25 @@ function start() {
     }
     speed = Math.floor((box * 1000)/time_interval_calling_function);
     div_choose_level.style.display = "none";
+    div_choose_strategy.style.display = "none";
+    if(calling_btn == main_page_demo_btn){
+        div_choose_strategy.style.display = "block";
+        submit_strategy.addEventListener("click",Choose_strategy);
+    }else{
+        count = 3;
+        count_i = setInterval(counting,1000);
+    }
+}
+
+function Choose_strategy(){
+    let form = document.getElementById("list_strategy");
+    for(i = 0; i < form.length ; i ++)
+    {
+        if(form.elements[i].checked == true)
+            strategy = form.elements[i].value ;
+    }
+    submit_strategy.removeEventListener("click",Choose_strategy);
+    div_choose_strategy.style.display = "none";
     count = 3;
     count_i = setInterval(counting,1000);
 }
@@ -291,31 +324,28 @@ function control(event)
 }
 
 function random_blocks(){
-    let mid = Math.floor(width_grid/2),m_mid = Math.floor(mid/2);
-    // console.log(mid);
-    x = Math.floor(Math.random() * (3) + 2);
-    y = Math.floor(Math.random() * (3) + 2);
-    sites_of_blocks[x][y] = 1;
-
-    
-    x = Math.floor(Math.random() * (4) + 8);
-    y = Math.floor(Math.random() * (3) + 2);
-    sites_of_blocks[x][y] = 1;
-
-    
-    y = Math.floor(Math.random() * (4) + 8);
-    x = Math.floor(Math.random() * (3) + 2);
-    sites_of_blocks[x][y] = 1;
-
-    y = Math.floor(Math.random() * (4) + 8);
-    x = Math.floor(Math.random() * (4) + 8);
-    sites_of_blocks[x][y] = 1;
-    // if(key == "Hard")
-    // {
-    //     sites_of_blocks[mid][3 * Math.floor(width_grid/4)] = 1;
-    //     sites_of_blocks[mid][0] = 0;
-    // }    
-    //sites_of_blocks[mid - m_mid][mid - m_mid] = sites_of_blocks[[mid - m_mid]][mid + m_mid] = sites_of_blocks[mid + m_mid][mid - m_mid] = sites_of_blocks[[mid + m_mid]][mid + m_mid] = sites_of_blocks[mid][mid] = 1; 
+    let lim = 9, x = 0, y = 0;
+    sites_of_blocks[2][2] = 1;
+    for(i = 0;i < lim; i ++){
+        let lim_dis = 2;
+        while(1){
+            x = Math.floor(Math.random()*(width_grid - 2) + 1);
+            y = Math.floor(Math.random()*(width_grid - 2) + 1);
+            let tk = false;
+            for(x_ch = -lim_dis; x_ch <= lim_dis; x_ch ++){
+                for(y_ch = -lim_dis; y_ch <= lim_dis; y_ch ++){
+                    let nw_x = x + x_ch;
+                    let nw_y = y + y_ch;
+                    if((nw_x >= 0) && (nw_x < width_grid) && (nw_y >= 0) && (nw_y < width_grid)){
+                        tk |= sites_of_blocks[nw_x][nw_y];
+                    }                    
+                }
+            }
+            if(!tk)
+                break;
+        }
+        sites_of_blocks[x][y] = 1;
+    }
 }
 
 function draw_canvas() {
@@ -365,12 +395,14 @@ function draw(){
     }
     else
     {
-        req_dir();
+        if(strategy == "BFS")
+            Get_Dir_By_BFS();
+        else
+            req_dir();
     }
 
-    let new_head = make_new_head();
-
-    if(check_game_over(new_head) == true)
+    let new_head = make_new_head(snake, d);
+    if(check_game_over(new_head, snake) == true)
     {
         f_game_over();
         clearInterval(game);
@@ -383,13 +415,27 @@ function draw(){
     {
         score ++;
         score_card.innerHTML = score;
-        food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
-        food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
-        while(((food_pos.x == new_head.x) && (food_pos.y == new_head.y))||(sites_of_blocks[food_pos.x/box][food_pos.y/box] == 1))
-        {
-            food_pos.x = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;
-            food_pos.y = (Math.floor(Math.random() * (width_grid - 2)) + 1 )* box ;       
+        let x = food_pos.x / box, y = food_pos.y / box;
+        let lim_dis = 2;
+        while(1){
+            x = Math.floor(Math.random()*(width_grid - 2) + 1);
+            y = Math.floor(Math.random()*(width_grid - 2) + 1);
+            let tk = false;
+            for(x_ch = -lim_dis; x_ch <= lim_dis; x_ch ++){
+                for(y_ch = -lim_dis; y_ch <= lim_dis; y_ch ++){
+                    let nw_x = x + x_ch;
+                    let nw_y = y + y_ch;
+                    if((nw_x >= 0) && (nw_x < width_grid) && (nw_y >= 0) && (nw_y < width_grid)){
+                        tk |= sites_of_blocks[nw_x][nw_y];
+                    }                    
+                }
+            }
+            if(!tk)
+                break;
         }
+        food_pos.x = x * box;
+        food_pos.y = y * box;
+        found_dir = false;
         food_audio.play();
     }
     else
@@ -397,7 +443,8 @@ function draw(){
         snake.pop();
     }
 }
-function make_new_head() {
+
+function make_new_head(snake, d) {
     let new_x = snake[0].x;
     let new_y = snake[0].y;
     if(d == "left") {new_x -= box;} ;
@@ -410,6 +457,121 @@ function make_new_head() {
         y : new_y 
     }
     return new_head;
+}
+
+function make_new_snake(old_snake, d){
+    let new_snake = [];
+    for(i = 0; i < old_snake.length; i ++){
+        new_snake[i] = {
+                        x: old_snake[i].x, 
+                        y: old_snake[i].y
+                        }; 
+    }
+    new_snake.unshift(make_new_head(new_snake, d));
+    new_snake.pop();
+    return new_snake;
+}
+
+function DFS_Search(ps_snake, d, visited){
+    if(check_game_over(ps_snake[0], ps_snake))
+        return false;
+    if((ps_snake[0].x == food_pos.x) && (ps_snake[0].y == food_pos.y))
+        return true;
+    if(visited[ps_snake[0].x/box][ps_snake[0].y/box])
+        return false;
+    let gt_r = false;
+    visited[ps_snake[0].x/box][ps_snake[0].y/box] = 1;
+    for(let i = 0; i < dirs.length; i ++){
+        if(dirs[i] != rev(d)){
+            let nw_sn = make_new_snake(ps_snake, dirs[i]);
+            gt_r = DFS_Search(nw_sn, dirs[i], visited);
+            if(gt_r)
+                break;
+        }
+    }
+    visited[ps_snake[0].x/box][ps_snake[0].y/box] = 0;
+    return gt_r;
+}
+
+function Get_Dir_By_DFS(){
+    let nw_d = d;
+    let visited = new Array(width_grid);
+    for(let x = 0 ; x < width_grid; x ++)
+    {
+        visited[x] = new Array(width_grid);
+        for(let y = 0; y < width_grid ; y ++)
+        {
+            visited[x][y] = 0;
+        }
+    }
+    let gt_r = false;
+    for(let i = 0; i < dirs.length; i ++){
+        if(dirs[i] != rev(d)){
+            let nw_sn = make_new_snake(snake, dirs[i]);
+            gt_r = DFS_Search(nw_sn, dirs[i], visited);
+            if(gt_r)
+                nw_d = dirs[i];
+        }
+    }
+    d = nw_d;
+}
+
+function Get_Dir_By_BFS(){
+    if(Found_dirs.length > 0){
+        d = Found_dirs[Found_dirs.length - 1];
+        Found_dirs.pop();
+        return;
+    }
+    let nw_d = d;
+    let visited = new Array(width_grid), par = new Array(width_grid), go_dirs = new Array(width_grid), que = [], prevDir = [];
+    for(let x = 0 ; x < width_grid; x ++)
+    {
+        visited[x] = new Array(width_grid);
+        par[x] = new Array(width_grid); 
+        go_dirs[x] = new Array(width_grid);
+        for(let y = 0; y < width_grid ; y ++)
+        {
+            visited[x][y] = 0;
+        }
+    }
+    prevDir.push(d);
+    que.push(snake);
+    visited[snake[0].x/box][snake[0].y/box] = 1;
+    go_dirs[snake[0].x/box][snake[0].y/box] = "stop";
+    while(que.length > 0){
+        let tp_sn = que[0];
+        let prev_dir = prevDir[0];
+        que.shift();
+        prevDir.shift();
+        if((tp_sn[0].x == food_pos.x) && (tp_sn[0].y == food_pos.y))
+            break;
+        
+        for(let i = 0; i < dirs.length; i ++){
+            if(dirs[i] != rev(prev_dir)){
+                let nw_snake = make_new_snake(tp_sn, dirs[i]);
+                if((!check_game_over(nw_snake[0], tp_sn)) && (visited[nw_snake[0].x/box][nw_snake[0].y/box] == 0)){
+                    que.push(nw_snake);
+                    prevDir.push(dirs[i]);
+                    visited[nw_snake[0].x/box][nw_snake[0].y/box] = 1;
+                    par[nw_snake[0].x/box][nw_snake[0].y/box] = tp_sn[0];
+                    go_dirs[nw_snake[0].x/box][nw_snake[0].y/box] = dirs[i];
+                }
+            }
+        }
+    }   
+    let st = {
+        x: food_pos.x,
+        y: food_pos.y
+    };
+    while((st != undefined) && (go_dirs[st.x/box][st.y/box] != "stop")){
+        Found_dirs.push(go_dirs[st.x/box][st.y/box]);
+        let go_to = par[st.x/box][st.y/box];
+        st = go_to;
+    }
+    if(Found_dirs.length == 0)
+        return;
+    d = Found_dirs[Found_dirs.length - 1];
+    Found_dirs.pop();
 }
 
 function check_game_over(head, snake) {
@@ -425,7 +587,7 @@ function check_game_over(head, snake) {
     }    
     if(sites_of_blocks[head.x/box][head.y/box] == 1)
         return true;
-    for(i = 1; i < snake.length - 1;i ++ )
+    for(i = 1; i <= snake.length - 1;i ++ )
     {
         if((head.x == snake[i].x) && (head.y == snake[i].y))
         {
@@ -439,25 +601,25 @@ function check_game_over(head, snake) {
 // whether due to danger or if we get a same coordinate as
 // food then if no obstacles come in between then change direction
 function req_dir() {
-    let changed = false;
+    let ImpToChange = false;
     let old_d = d;
-    prob_head = make_new_head();
-    changed = check_game_over(prob_head) ;
+    prob_head = make_new_head(snake, d);
+    ImpToChange = check_game_over(prob_head, snake) ;
 
     if( ((old_d == "right") || (old_d == "left")) )
     {
-        if((changed) || ((food_pos.x == snake[0].x) && (!check_food_in_x()) ))
+        if((ImpToChange) || ((food_pos.x == snake[0].x) && (!check_food_in_x()) ))
         {
             if(food_pos.y > snake[0].y){
                 d = "down" ;
-                prob_head = make_new_head();
+                prob_head = make_new_head(snake, d);
                 if(check_game_over(prob_head, snake) == true)
                     d = "up";
             }
             else
             {
                 d = "up";
-                prob_head = make_new_head();
+                prob_head = make_new_head(snake, d);
                 if(check_game_over(prob_head, snake) == true)
                     d = "down";
             }   
@@ -465,26 +627,26 @@ function req_dir() {
     }
     else
     {
-        if((changed) || (food_pos.x != snake[0].x))
+        if((ImpToChange) || (food_pos.x != snake[0].x))
         {
             if(food_pos.x > snake[0].x)
             {
                 d = "right";
-                prob_head = make_new_head();
-                if(check_game_over(prob_head) == true)
+                prob_head = make_new_head(snake, d);
+                if(check_game_over(prob_head, snake) == true)
                     d = "left";
             }
             else
             {
                 d = "left";
-                prob_head = make_new_head();
-                if(check_game_over(prob_head) == true)
+                prob_head = make_new_head(snake, d);
+                if(check_game_over(prob_head, snake) == true)
                     d = "right";
             }
         }
     }
-    prob_head = make_new_head();
-    if(check_game_over(prob_head) == true)   
+    prob_head = make_new_head(snake, d);
+    if(check_game_over(prob_head, snake) == true)   
         d = old_d ; 
 }
 
@@ -495,18 +657,18 @@ function far_site_game_over(){
         new_snake.push(snake[i]);
     }
     let old_d = d;
-    let prob_head = make_new_head();
+    let prob_head = make_new_head(snake, d);
     while(!check_game_over(prob_head)){
         new_snake.unshift(prob_head);
         if((food_pos.x != new_snake[0].x) || (food_pos.y != new_snake[0].y))
             new_snake.pop();
-        prob_head = make_new_head();
+        prob_head = make_new_head(snake, d);
     }
     d = "up";
-    prob_head = make_new_head();
+    prob_head = make_new_head(snake, d);
     let b1 = check_game_over(prob_head);
     d = "down";
-    prob_head = make_new_head();
+    prob_head = make_new_head(snake, d);
     let b2 = check_game_over(prob_head);
     d = old_d;
     return (!b1 && !b2);
@@ -543,7 +705,6 @@ function check_food_in_x()
 }
 
 function f_game_over() {
-    // console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
     back_btn.style.transform = "translate(-50%,0%)";
     game_over.play();
@@ -570,6 +731,7 @@ function reload() {
     else
         Object.assign(main_page[0].style,reset_turning);
     div_choose_level.style.display = "none";
+    div_choose_strategy.style.display = "none";
     background.style.filter = "none";
     game_start = false;
     back_btn.style.transform = "translate(-50%,0%)";
