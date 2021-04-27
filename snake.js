@@ -401,7 +401,6 @@ function draw(){
         else
             req_dir();
     }
-    console.log(d);
     let new_head = make_new_head(snake, d);
     if(check_game_over(new_head, snake) == true)
     {
