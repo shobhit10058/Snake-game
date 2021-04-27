@@ -187,6 +187,7 @@ function init(event) {
     document.getElementsByClassName("game")[0].style.opacity = "1";
     document.getElementsByClassName("game")[0].style.display = "block";
     help.style.display = "none";
+    Found_dirs = [];
     //sites_of_blocks initialiasation
     for(let x = 0 ; x < width_grid; x ++)
     {
