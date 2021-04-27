@@ -412,7 +412,7 @@ function make_new_head() {
     return new_head;
 }
 
-function check_game_over(head) {
+function check_game_over(head, snake) {
     //game over or pause
     if((head.x < off) || (head.x >= (width_grid * box)))
     {
@@ -435,58 +435,12 @@ function check_game_over(head) {
     return false;
 }
 
+// move in same direction until a necessary to change
+// whether due to danger or if we get a same coordinate as
+// food then if no obstacles come in between then change direction
 function req_dir() {
     let changed = false;
     let old_d = d;
-    // if(snake[0].x != food_pos.x)
-    // {
-    //     if(snake[0].x < food_pos.x)
-    //     {
-    //         if(old_d != "left")
-    //         {
-    //             d = "right";
-    //         }    
-    //         if(d == "right")
-    //             changed = true;
-    //     }    
-    //     else
-    //     {
-    //         if(old_d != "right")
-    //         {
-    //             d = "left";
-    //         }   
-    //         if(d == "left")
-    //             changed = true;
-    //     }   
-    // }
-    // //console.log(snake[0],food_pos,d,changed);
-    // let prob_head = make_new_head();
-    // if(changed == true)
-    //     changed = !check_game_over(prob_head) ;
-    // if(changed == false)
-    // {
-    //     if(snake[0].y != food_pos.y)
-    //     {
-    //         if(snake[0].y < food_pos.y)
-    //         {
-    //             if(old_d != "up")
-    //             {
-    //                  d = "down";
-    //             }   
-    //             if(d == "down")
-    //                 changed = true;
-    //         }   
-    //         else
-    //         {
-    //             if(old_d != "down")
-    //             {
-    //                 d = "up";
-    //             }     
-    //             if(d == "up")
-    //                 changed = true;
-    //         }
-    //     }
-    //}
     prob_head = make_new_head();
     changed = check_game_over(prob_head) ;
 
@@ -497,14 +451,14 @@ function req_dir() {
             if(food_pos.y > snake[0].y){
                 d = "down" ;
                 prob_head = make_new_head();
-                if(check_game_over(prob_head) == true)
+                if(check_game_over(prob_head, snake) == true)
                     d = "up";
             }
             else
             {
                 d = "up";
                 prob_head = make_new_head();
-                if(check_game_over(prob_head) == true)
+                if(check_game_over(prob_head, snake) == true)
                     d = "down";
             }   
         }
@@ -533,6 +487,7 @@ function req_dir() {
     if(check_game_over(prob_head) == true)   
         d = old_d ; 
 }
+
 function far_site_game_over(){
     let new_snake = [];
     for(i = 0 ; i < snake.length ; i++)
@@ -556,6 +511,7 @@ function far_site_game_over(){
     d = old_d;
     return (!b1 && !b2);
 }
+
 function check_food_in_y()
 {
     if(snake[0].y != food_pos.y)
@@ -570,6 +526,7 @@ function check_food_in_y()
     }
     return false;
 }
+
 function check_food_in_x()
 {
     if(snake[0].x != food_pos.x)
@@ -584,6 +541,7 @@ function check_food_in_x()
     }
     return false;
 }
+
 function f_game_over() {
     // console.log(snake[0].x,snake[0].y);
     Object.assign(game_over_card.style,style_game_over);
@@ -672,6 +630,3 @@ function swipedetect(el, callback){
     }, false)
 }
   
-//USAGE:
-/*
-*/
